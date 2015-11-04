@@ -18,6 +18,12 @@ module.exports = function construct(config, log) {
 
   log = log.module('robust-ioc')
 
+  if (_.isString(config)) {
+    config = {
+      containerName: config
+    }
+  }
+  
   config = config || {}
   config = _.defaults(config, {
     bail: false // by default it just logs warnings
