@@ -29,3 +29,12 @@ Let people know how they can dive into the project, include important links to t
 ## License
 
 A short snippet describing the license (MIT, Apache, etc.)
+
+
+
+# Features
+
+- Conditional module registering (to register one svc for one module, and another svc2 for module2)
+ioc.register('dal', require('dal'))
+ioc.condition('dal', 'dal2', 'module2')
+ioc.register('dal2', require('dal2')).condition({module: 'module2', alias: 'dal'})

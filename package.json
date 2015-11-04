@@ -1,5 +1,5 @@
 {
-  "name": "lib-base",
+  "name": "robust-ioc",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -10,30 +10,35 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:webinverters/lib-base.git"
+    "url": "git@github.com:webinverters/robust-ioc.git"
   },
   "author": "Justin Mooser",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webinverters/lib-base/issues"
+    "url": "https://github.com/webinverters/robust-ioc/issues"
   },
-  "homepage": "https://github.com/webinverters/lib-base",
+  "homepage": "https://github.com/webinverters/robust-ioc",
   "devDependencies": {
+    "bluebird": "^3.0.5",
     "chai": "^1.x.x",
     "chai-as-promised": "^4.1.1",
+    "chai-subset": "^1.1.0",
     "coveralls": "2.11.2",
     "docme": "^0.2.1",
-    "gulp-jsdoc": "^0.1.4",
+    "dotenv": "^1.2.0",
     "gulp": "^3.8.11",
     "gulp-bump": "^0.3.0",
     "gulp-filter": "^2.0.2",
     "gulp-git": "^1.1.0",
+    "gulp-jsdoc": "^0.1.4",
     "gulp-tag-version": "^1.2.1",
     "istanbul": "0.3.7",
+    "lodash": "^3.10.1",
     "mocha": "2.2.1",
     "mocha-lcov-reporter": "0.0.2",
     "sinon": "^1.14.1",
     "sinon-as-promised": "^2.0.3",
-    "sinon-chai": "^2.6.0"
+    "sinon-chai": "^2.6.0",
+    "win-with-logs": "^2.0.11"
   }
 }
