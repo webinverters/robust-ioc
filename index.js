@@ -11,6 +11,7 @@
 
 
 var containers = {}
+var copyCount = 1
 
 function RobustIOC() {}
 module.exports = function construct(config, log) {
@@ -23,18 +24,18 @@ module.exports = function construct(config, log) {
       containerName: config
     }
   }
-  
+
   config = config || {}
   config = _.defaults(config, {
-    bail: false // by default it just logs warnings
+    bail: false, // by default it just logs warnings
+    containerName: 'DefaultContainer'
   })
 
   if (config.containerName && containers[config.containerName]) {
-    var container = containers[containerName]
-    if (container) return container
-  } else {
-    config.containerName = 'DefaultContainer'
+    return containers[config.containerName]
   }
+
+  m.id = config.containerName
 
   // serviceBag contains a list of factory functions for every service.
   // the factory function will either get an existing one or create a new one
@@ -133,6 +134,7 @@ module.exports = function construct(config, log) {
   m.singleton = function(serviceName, serviceFactory) {
     //log('Singleton', serviceName)
     serviceInstances[serviceName] = serviceFactory
+    serviceFactory.__singleton__ = true
   }
 
   m.create = function(serviceName, opts) {
@@ -162,6 +164,33 @@ module.exports = function construct(config, log) {
     var newConfig = _.extend({}, config,{containerName: containerName}, plusConfig || {})
     containers[containerName] = module.exports.apply(m, [newConfig, log])
     return containers[containerName]
+  }
+
+  m.copy = function(copyName) {
+    copyName = copyName || (m.id + '-copy' + copyCount++)
+    if (containers[copyName]) throw log.errorReport('DUPLICATE_COPY_NAME')
+    var copy = m.container(copyName)
+    copy.state({
+      serviceBag: _.cloneDeep(serviceBag),
+      serviceFactories: _.cloneDeep(serviceFactories),
+      serviceInstances: _.cloneDeep(serviceInstances)
+    })
+    return copy
+  }
+
+  m.state = function(state) {
+    serviceBag = state.serviceBag || {}
+    serviceFactories = state.serviceFactories || {}
+    serviceInstances = state.serviceInstances || {}
+  }
+
+  m.modify = function(serviceName, modifier) {
+    var thing = m.get(serviceName)
+    if (thing.__singleton__) {
+      m.singleton(serviceName, modifier(thing))
+    } else {
+      m.register(serviceName, modifier(thing))
+    }
   }
 
   function instanceExists(serviceName, opts) {
