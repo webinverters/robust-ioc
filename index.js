@@ -97,6 +97,8 @@ module.exports = function construct(config, log) {
 
             inst = serviceFactory.apply(serviceFactory, deps)
           }
+        } else if (params.length == 0) {
+          inst = serviceFactory.apply(serviceFactory)
         }
 
         if (opts.overrides) {
