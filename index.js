@@ -120,6 +120,7 @@ module.exports = function construct(config, log) {
       //log('Factory', serviceName)
       serviceFactories[serviceName] = serviceFactory
       serviceFactory.serviceName = serviceName
+      serviceFactory.__temporal = (opts && opts.temporal)
     }
 
     return {
@@ -129,6 +130,9 @@ module.exports = function construct(config, log) {
         _.each(arguments, function(depName) {
           serviceFactory.optionalDeps[depName] = true
         })
+      },
+      temporal: function() {
+        serviceFactory.__temporal = true
       }
     }
   }
@@ -150,12 +154,15 @@ module.exports = function construct(config, log) {
   }
 
   m.get = function(serviceName, opts) {
+    if (serviceFactories[serviceName] && serviceFactories[serviceName].__temporal) {
+      var ret = m.create(serviceName, opts)
+      return ret
+    }
     if (instanceExists(serviceName)) {
       return serviceInstances[serviceName]
     }
     else {
       var ret = m.create(serviceName, opts)
-      count = 0
       return ret
     }
   }
@@ -193,6 +200,16 @@ module.exports = function construct(config, log) {
     } else {
       m.register(serviceName, modifier(thing))
     }
+  }
+
+  m.nuke = function() {
+    serviceBag = {}
+    serviceFactories = {}
+    serviceInstances = {}
+    containers = {}
+    copyCount = 1
+
+    containers[config.containerName] = m
   }
 
   function instanceExists(serviceName, opts) {
