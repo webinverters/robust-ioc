@@ -90,6 +90,10 @@ module.exports = function construct(config, log) {
                     log.warn('Missing Dependency', details)
                   }
                 }
+                else {
+                  log.error('Service Failed Construction.', ex)
+                  throw ex
+                }
               }
 
               return svc
