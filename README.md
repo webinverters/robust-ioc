@@ -20,6 +20,16 @@ Provide code examples and explanations of how to get the project.
 
     var ioc = require('robust-ioc')({containerName: 'demo'})
 
+### Registering Stuff
+
+    ioc.register('helloMsg', function() { return "hello world!" })
+    ioc.register('hostess', function(helloMsg) { return { sayHello: function() { console.log(helloMsg) } } })
+
+### Demonstration
+
+    var hostess = ioc.get('hostess')
+    hostess.sayHello()
+
 ## Tests
 
 Describe and show how to run the tests with code examples.
