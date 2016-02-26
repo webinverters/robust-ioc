@@ -76,6 +76,9 @@ module.exports = function construct(config, log) {
           if (params[1] == 'deps') {
             inst = serviceFactory(opts.config || serviceInstances['config'], opts.deps || serviceInstances)
           }
+          else if (params[1]== 'log' && params[2] ==  'deps') {
+            inst = serviceFactory(opts.config || serviceInstances['config'], opts.log || serviceInstances['log'], opts.deps || serviceInstances)
+          }
           else {
             var deps = _.map(params, function(serviceName) {
               var svc
