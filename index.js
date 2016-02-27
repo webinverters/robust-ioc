@@ -16,7 +16,7 @@ var copyCount = 1
 function RobustIOC() {}
 module.exports = function construct(config, log) {
   log = log || muzzledlog
-  
+
   var m = new RobustIOC()
 
   log = log.module('robust-ioc')
@@ -38,11 +38,6 @@ module.exports = function construct(config, log) {
   }
 
   m.id = config.containerName
-
-  // serviceBag contains a list of factory functions for every service.
-  // the factory function will either get an existing one or create a new one
-  // depending on a variety of factors.
-  var serviceBag = {}
 
   var serviceFactories = {}
   var serviceInstances = {}
@@ -74,40 +69,33 @@ module.exports = function construct(config, log) {
 
         var inst
         var params = getParamNames(serviceFactory)
-        if (params[0] == 'config') {
-          if (params[1] == 'deps') {
-            inst = serviceFactory(opts.config || serviceInstances['config'], opts.deps || serviceInstances)
-          }
-          else if (params[1]== 'log' && params[2] ==  'deps') {
-            inst = serviceFactory(opts.config || serviceInstances['config'], opts.log || serviceInstances['log'], opts.deps || serviceInstances)
-          }
-          else {
-            var deps = _.map(params, function(serviceName) {
-              var svc
-              var details = {service: serviceFactory.serviceName, dependency: serviceName}
-              try {
-                svc = opts[serviceName] || m.get(serviceName)
-                if (!svc) log.warn('Service Dependency Missing', details)
-              } catch (ex) {
-                if (ex.what=='SERVICE_NOT_REGISTERED') {
-                  if (!(serviceFactory.optionalDeps && serviceFactory.optionalDeps[serviceName])) {
-                    if (config.bail) throw log.errorReport('MISSING_DEPENDENCY', details, ex)
-                    log.warn('Missing Dependency', details)
-                  }
-                }
-                else {
-                  log.error('Service Failed Construction.', ex)
-                  throw ex
+        if (params.length == 0) {
+          inst = serviceFactory.apply(serviceFactory)
+        } else {
+          var deps = _.map(params, function(serviceName) {
+            var svc, details = {service: serviceFactory.serviceName, dependency: serviceName}
+            try {
+              if (config.enableMocks) {
+                opts[serviceName] = m.getMock(serviceName)
+              }
+              svc = opts[serviceName] || m.get(serviceName)
+              if (!svc) log.warn('Service Dependency Missing', details)
+            } catch (ex) {
+              if (ex.what=='SERVICE_NOT_REGISTERED') {
+                if (!(serviceFactory.optionalDeps && serviceFactory.optionalDeps[serviceName])) {
+                  if (config.bail) throw log.errorReport('MISSING_DEPENDENCY', details, ex)
+                  log.warn('Missing Dependency', details)
                 }
               }
+              else {
+                log.error('Service Failed Construction.', ex)
+                throw ex
+              }
+            }
+            return svc
+          })
 
-              return svc
-            })
-
-            inst = serviceFactory.apply(serviceFactory, deps)
-          }
-        } else if (params.length == 0) {
-          inst = serviceFactory.apply(serviceFactory)
+          inst = serviceFactory.apply(serviceFactory, deps)
         }
 
         if (opts.overrides) {
@@ -163,16 +151,11 @@ module.exports = function construct(config, log) {
   }
 
   m.get = function(serviceName, opts) {
-    if (serviceFactories[serviceName] && serviceFactories[serviceName].__temporal) {
-      var ret = m.create(serviceName, opts)
-      return ret
-    }
+    // if (serviceFactories[serviceName] && serviceFactories[serviceName].__temporal) {
     if (instanceExists(serviceName)) {
       return serviceInstances[serviceName]
-    }
-    else {
-      var ret = m.create(serviceName, opts)
-      return ret
+    } else {
+      return m.create(serviceName, opts)
     }
   }
 
@@ -189,7 +172,6 @@ module.exports = function construct(config, log) {
     if (containers[copyName]) throw log.errorReport('DUPLICATE_COPY_NAME')
     var copy = m.container(copyName)
     copy.state({
-      serviceBag: _.cloneDeep(serviceBag),
       serviceFactories: _.cloneDeep(serviceFactories),
       serviceInstances: _.cloneDeep(serviceInstances)
     })
@@ -197,11 +179,21 @@ module.exports = function construct(config, log) {
   }
 
   m.state = function(state) {
-    serviceBag = state.serviceBag || {}
     serviceFactories = state.serviceFactories || {}
     serviceInstances = state.serviceInstances || {}
   }
 
+  m.configure = function(conf) {
+    _.merge(config, conf)
+  }
+
+  /**
+   * Replace a registered factory or singleton.
+   *
+   * @param  {type} serviceName description
+   * @param  {type} modifier    description
+   * @return {type}             description
+   */
   m.modify = function(serviceName, modifier) {
     var thing = m.get(serviceName)
     if (thing.__singleton__) {
@@ -210,9 +202,16 @@ module.exports = function construct(config, log) {
       m.register(serviceName, modifier(thing))
     }
   }
+  // alias of modify()
+  m.replace = m.modify
 
+
+  /**
+   * Completely destory all state of this container.
+   *
+   * @return {type}  description
+   */
   m.nuke = function() {
-    serviceBag = {}
     serviceFactories = {}
     serviceInstances = {}
     containers = {}
@@ -239,6 +238,11 @@ module.exports = function construct(config, log) {
   if (config.containerName) {
     containers[config.containerName] = m
   }
+
+  // __deps__ is a magical service name which contains all the dependencies.
+  // This is provided for convenience, but may not be a good idea to actually
+  // ever use.
+  m.singleton('__deps__', serviceInstances)
   return m
 }
 
