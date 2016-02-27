@@ -15,6 +15,8 @@ var copyCount = 1
 
 function RobustIOC() {}
 module.exports = function construct(config, log) {
+  log = log || muzzledlog
+  
   var m = new RobustIOC()
 
   log = log.module('robust-ioc')
@@ -239,3 +241,10 @@ module.exports = function construct(config, log) {
   }
   return m
 }
+
+
+function muzzledlog() {}
+muzzledlog.method = muzzledlog.goal = function() {
+  return muzzledlog
+}
+muzzledlog.info = muzzledlog.error = muzzledlog.warn = muzzledlog.log = muzzledlog.fatal = muzzledlog.module = muzzledlog

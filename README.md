@@ -22,12 +22,12 @@ Provide code examples and explanations of how to get the project.
 
 ### Registering Stuff
 
-    ioc.register('helloMsg', function() { return "hello world!" })
+    ioc.singleton('helloMsg', "hello world!")
     ioc.register('hostess', function(helloMsg) { return { sayHello: function() { console.log(helloMsg) } } })
 
 ### Demonstration
 
-    var hostess = ioc.get('hostess')
+    var hostess = ioc.get('hostess') // hostess will be injected with helloMsg
     hostess.sayHello()
 
 ## Tests
