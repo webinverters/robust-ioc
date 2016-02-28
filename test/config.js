@@ -1,6 +1,14 @@
 /**
- * Created by justin on 2015-03-13.
- */
+* @summary: ______.
+* @description: _____.
+*
+* @author: Robustly.io <m0ser>
+* @date:   2016-02-26T22:46:08-05:00
+* @email:  m0ser@robustly.io
+* @lastAuthor:   m0ser
+* @lastModified: 2016-02-26T22:46:34-05:00
+* @license: Apache-2.0
+*/
 
 require('dotenv').load();
 
@@ -13,9 +21,6 @@ global.testconfig = {
   }
 }
 
-/**
- * Created by justin on 2015-03-13.
- */
 global.chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
 
@@ -39,6 +44,5 @@ global.expect = chai.expect;
 global.throwEx = function(msg) {
   throw new Error(msg)
 }
-
 
 global.testlog = require('win-with-logs')({app: 'robust-ioc', env: 'test', component: 'int-tests'})

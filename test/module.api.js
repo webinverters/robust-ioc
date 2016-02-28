@@ -1,3 +1,17 @@
+/**
+* @summary: ______.
+* @description: _____.
+*
+* @author: Robustly.io <m0ser>
+* @date:   2016-02-27T18:25:13-05:00
+* @email:  m0ser@robustly.io
+* @lastAuthor:   m0ser
+* @lastModified: 2016-02-27T18:26:40-05:00
+* @license: Apache-2.0
+*/
+
+
+
 var ModuleUnderTest = require('../index')
 //var log = require('win-with-logs')({debug:false, app: 'robust-ioc', env: 'test', component: 'int'})
 

@@ -1,3 +1,14 @@
+<!--
+@Author: Robustly.io <m0ser>
+@Date:   2016-02-27T23:29:51-05:00
+@Email:  m0ser@robustly.io
+@Last modified by:   m0ser
+@Last modified time: 2016-02-27T23:30:28-05:00
+@License: Apache-2.0
+-->
+
+
+
 ## Synopsis
 
 Update.
@@ -15,9 +26,25 @@ A short description of the motivation behind the creation and maintenance of the
 
 Provide code examples and explanations of how to get the project.
 
+## Debugging
+
+If you want to debug this module, pass it a logger that conforms to the "A1 Logging Interface Specification" as the second parameter.
+
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+### Initialization
+
+    var ioc = require('robust-ioc')({containerName: 'demo'})
+
+### Registering Stuff
+
+    ioc.singleton('helloMsg', "hello world!")
+    ioc.register('hostess', function(helloMsg) { return { sayHello: function() { console.log(helloMsg) } } })
+
+### Demonstration
+
+    var hostess = ioc.get('hostess') // hostess will be injected with helloMsg
+    hostess.sayHello()
 
 ## Tests
 
