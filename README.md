@@ -1,3 +1,14 @@
+<!--
+@Author: Robustly.io <m0ser>
+@Date:   2016-02-27T23:29:51-05:00
+@Email:  m0ser@robustly.io
+@Last modified by:   m0ser
+@Last modified time: 2016-02-27T23:30:28-05:00
+@License: Apache-2.0
+-->
+
+
+
 ## Synopsis
 
 Explanation.
@@ -13,6 +24,10 @@ A short description of the motivation behind the creation and maintenance of the
 ## Installation
 
 Provide code examples and explanations of how to get the project.
+
+## Debugging
+
+If you want to debug this module, pass it a logger that conforms to the "A1 Logging Interface Specification" as the second parameter.
 
 ## API Reference
 
