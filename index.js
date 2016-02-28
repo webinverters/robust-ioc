@@ -16,6 +16,7 @@ var copyCount = 1
 function RobustIOC() {}
 module.exports = function construct(config, log) {
   log = log || muzzledlog
+  log('Robust-Ioc: Logger Detected...')
 
   var m = new RobustIOC()
 
@@ -152,7 +153,7 @@ module.exports = function construct(config, log) {
     if (instanceExists(serviceName)) {
       return serviceInstances[serviceName]
     } else {
-      log.debug('Creating service:', {serviceName: serviceName, registered: serviceFactories})
+      log.debug('Creating service:', {serviceName: serviceName, registered: _.keys(serviceFactories)})
       return m.create(serviceName, opts)
     }
   }
