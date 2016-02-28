@@ -75,9 +75,6 @@ module.exports = function construct(config, log) {
           var deps = _.map(params, function(serviceName) {
             var svc, details = {service: serviceFactory.serviceName, dependency: serviceName}
             try {
-              if (config.enableMocks) {
-                opts[serviceName] = m.getMock(serviceName)
-              }
               svc = opts[serviceName] || m.get(serviceName)
               if (!svc) log.warn('Service Dependency Missing', details)
             } catch (ex) {

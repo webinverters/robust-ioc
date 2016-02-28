@@ -2,7 +2,7 @@
 # @Date:   2016-02-26T22:48:58-05:00
 # @Email:  m0ser@robustly.io
 # @Last modified by:   m0ser
-# @Last modified time: 2016-02-27T18:30:46-05:00
+# @Last modified time: 2016-02-27T23:04:32-05:00
 # @License: Apache-2.0
 
 
@@ -33,7 +33,7 @@ viewCov:
 all: unit int api
 
 publish:
-	git commit -am ${MSG}
+	git commit -am "${MSG}"
 	gulp ${SEMVER}
 	git push origin master --tags
 	npm publish
