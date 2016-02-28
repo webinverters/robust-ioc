@@ -152,6 +152,7 @@ module.exports = function construct(config, log) {
     if (instanceExists(serviceName)) {
       return serviceInstances[serviceName]
     } else {
+      log.debug('Creating service:', {serviceName: serviceName, registered: serviceFactories})
       return m.create(serviceName, opts)
     }
   }
