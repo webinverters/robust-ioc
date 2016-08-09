@@ -66,3 +66,4 @@ A short snippet describing the license (MIT, Apache, etc.)
 ioc.register('dal', require('dal'))
 ioc.condition('dal', 'dal2', 'module2')
 ioc.register('dal2', require('dal2')).condition({module: 'module2', alias: 'dal'})
++
