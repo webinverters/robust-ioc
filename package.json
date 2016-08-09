@@ -1,6 +1,6 @@
 {
-  "name": "robust-ioc",
-  "version": "1.0.9",
+  "name": "module-base",
+  "version": "0.0.7",
   "description": "",
   "main": "index.js",
   "scripts": {
