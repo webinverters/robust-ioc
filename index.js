@@ -1,4 +1,15 @@
 /**
+* @Author: Robustly.io <Auto>
+* @Date:   2016-02-26T13:21:47-05:00
+* @Email:  m0ser@robustly.io
+* @Last modified by:   Auto
+* @Last modified time: 2016-04-06T09:59:14-04:00
+* @License: Apache-2.0
+*/
+
+
+
+/**
  * @module index.js
  * @summary: Wires up the library.
  *
