@@ -1,7 +1,7 @@
 {
   "name": "robust-ioc",
   "version": "0.0.7",
-  "description": "",
+  "description": "wtf",
   "main": "index.js",
   "scripts": {
     "test": "make all",
