@@ -1,7 +1,7 @@
 {
   "name": "robust-ioc",
-  "version": "0.0.8",
-  "description": "wtf",
+  "version": "1.0.9",
+  "description": "IOC",
   "main": "index.js",
   "scripts": {
     "test": "make all",
@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "bluebird": "^3.3.3",
-    "lodash": "^4.14.2"
+    "lodash": "^4.14.1"
   }
 }
