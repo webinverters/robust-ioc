@@ -92,7 +92,7 @@ module.exports = function construct(config, log) {
             } catch (ex) {
               if (ex.what=='SERVICE_NOT_REGISTERED') {
                 if (!(serviceFactory.optionalDeps && serviceFactory.optionalDeps[serviceName])) {
-                  if (config.bail) throw log.errorReport('MISSING_DEPENDENCY', details, ex)
+                  if (config.bail) throw log.report(new Error('MISSING_DEPENDENCY'), details, ex)
                   log.warn('Missing Dependency', details)
                 }
               }
