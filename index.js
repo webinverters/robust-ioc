@@ -151,10 +151,10 @@ module.exports = function construct(config, log) {
 
   m.create = function(serviceName, opts) {
     var factory = serviceFactories[serviceName]
-    if (!factory) throw log.errorReport('SERVICE_NOT_REGISTERED', {serviceName: serviceName})
+    if (!factory) throw log.report(new Error('SERVICE_NOT_REGISTERED'), {serviceName: serviceName})
 
     serviceInstances[serviceName] = serviceWrapper(factory).createNew(opts)
-    if (!serviceInstances[serviceName]) throw log.errorReport('INVALID_FACTORY', {serviceName: serviceName, opts: opts})
+    if (!serviceInstances[serviceName]) throw log.report(new Error('INVALID_FACTORY'), {serviceName: serviceName, opts: opts})
     var ret = m.get(serviceName, opts)
     return ret
   }
@@ -179,7 +179,7 @@ module.exports = function construct(config, log) {
 
   m.copy = function(copyName) {
     copyName = copyName || (m.id + '-copy' + copyCount++)
-    if (containers[copyName]) throw log.errorReport('DUPLICATE_COPY_NAME')
+    if (containers[copyName]) throw log.report(new Error('DUPLICATE_COPY_NAME'))
     var copy = m.container(copyName)
     copy.state({
       serviceFactories: _.cloneDeep(serviceFactories),
