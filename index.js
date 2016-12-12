@@ -254,6 +254,14 @@ module.exports = function construct(config, log) {
   // This is provided for convenience, but may not be a good idea to actually
   // ever use.
   m.singleton('__deps__', serviceInstances)
+
+  m.ls = function() {
+    return {
+      factories: serviceFactories,
+      singletons: serviceInstances
+    }
+  }
+
   return m
 }
 
