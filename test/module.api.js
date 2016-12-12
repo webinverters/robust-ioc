@@ -42,7 +42,7 @@ describe('robust-ioc', function() {
       expect(function() { ioc.create('unique') }).to.not.throw(/MISSING_DEPENDENCY/)
     })
     it('if false, warning is issued for missing dependencies', function() {
-      var log = _.cloneDeep(testlog)
+      var log = testlog.context('test')
       sinon.spy(log, 'warn')
       log.module = function() { return this }
       ioc = ModuleUnderTest({containerName: 'test3'}, log)

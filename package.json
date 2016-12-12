@@ -24,6 +24,7 @@
     "chai-subset": "^1.2.1",
     "coveralls": "2.11.6",
     "docme": "0.3.0",
+    "dotenv": "2.0.0",
     "gulp": "3.9.1",
     "gulp-bump": "1.0.0",
     "gulp-filter": "3.0.1",
@@ -36,8 +37,7 @@
     "sinon": "1.17.3",
     "sinon-as-promised": "4.0.0",
     "sinon-chai": "2.8.0",
-    "dotenv": "2.0.0",
-    "win-with-logs": "^2.0.47"
+    "win-with-logs": "^5.0.13"
   },
   "dependencies": {
     "bluebird": "^3.3.3",
