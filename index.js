@@ -90,7 +90,8 @@ module.exports = function construct(config, log) {
               svc = opts[serviceName] || m.get(serviceName)
               if (!svc) log.warn('Service Dependency Missing', details)
             } catch (ex) {
-              if (ex.what=='SERVICE_NOT_REGISTERED') {
+              log('Error constructing service:', serviceName)
+              if (ex.code=='SERVICE_NOT_REGISTERED') {
                 if (!(serviceFactory.optionalDeps && serviceFactory.optionalDeps[serviceName])) {
                   if (config.bail) throw log.report(new Error('MISSING_DEPENDENCY'), details, ex)
                   log.warn('Missing Dependency', details)
