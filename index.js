@@ -20,19 +20,18 @@
  * @license Apache-2.0
  */
 
-var _ = require('lodash')
 
 var containers = {}
 var copyCount = 1
 
 function RobustIOC() {}
-module.exports = function construct(config) {
-  var log = require('../robust-log')({component: 'robust-ioc'})
+module.exports = function construct(config, log) {
+  log = log || muzzledlog
   log('Robust-Ioc: Logger Detected...')
 
   var m = new RobustIOC()
 
-
+  log = log.module('robust-ioc')
 
   if (_.isString(config)) {
     config = {
@@ -82,8 +81,6 @@ module.exports = function construct(config) {
 
         var inst
         var params = getParamNames(serviceFactory)
-        log('Constructing service:',{serviceName: serviceFactory.serviceName, deps: params})
-
         if (params.length == 0) {
           inst = serviceFactory.apply(serviceFactory)
         } else {
