@@ -24,6 +24,8 @@
 var containers = {}
 var copyCount = 1
 
+var _ = require('lodash')
+
 function RobustIOC() {}
 module.exports = function construct(config, log) {
   var log = log || require('robust-log')('robust-ioc')
