@@ -34,7 +34,7 @@ describe('robust-ioc', function() {
     it('if true, throws error for missing dependencies', function() {
       ioc = ioc.container('test', {bail: true})
       //ioc.register('unique', require('./services/unique'))
-      //expect(function() { ioc.create('unique') }).to.throw(/MISSING_DEPENDENCY/)
+      expect(function() { ioc.create('unique') }).to.throw(/SERVICE_NOT_REGISTERED/)
     })
     it('if false, throws error for missing dependencies', function() {
       ioc = ioc.container('test2')
@@ -42,9 +42,8 @@ describe('robust-ioc', function() {
       expect(function() { ioc.create('unique') }).to.not.throw(/MISSING_DEPENDENCY/)
     })
     it('if false, warning is issued for missing dependencies', function() {
-      var log = testlog.context('test')
+      var log = testlog.method('test')
       sinon.spy(log, 'warn')
-      log.module = function() { return this }
       ioc = ModuleUnderTest({containerName: 'test3'}, log)
       ioc.register('unique', require('./services/unique'))
       ioc.create('unique', { log: testlog })
@@ -85,13 +84,6 @@ describe('robust-ioc', function() {
         }
       })
       expect(unique.key(10)).to.equal('test-key')
-    })
-
-    it('did inject log successfully', function() {
-      var log = ioc.get('log')
-      log.module = sinon.stub().returns(log)
-      var unique = ioc.create('unique')
-      expect(log.module).to.have.been.calledWith('unique')
     })
 
     describe('if service has not been registered', function() {

@@ -11,14 +11,12 @@
 
 "use strict";
 
-module.exports = function construct(config, log, crypto) {
+module.exports = function construct(config, crypto) {
   var m = {};
   config = config ? config : {};
   config = _.defaults(config, {
     prefix: ''
   });
-
-  log = log.module('unique', arguments)
   crypto = crypto || require('crypto')
 
   m.key = function(length) {
