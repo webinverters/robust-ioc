@@ -5,12 +5,10 @@ module.exports = function construct(config, deps) {
   config = config ? config : {};
   config = _.defaults(config, {});
 
-  var log = deps.log.module('dal', deps)
-
   var savedObjects = {}
 
   m.save = function(object) {
-    var goal =  log.goal('save()', userConf)
+    var goal =  deps.log.goal('save()', userConf)
 
     savedObjects[object.id] = object
     return p.resolve({

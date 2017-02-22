@@ -6,7 +6,8 @@
   "scripts": {
     "test": "make all",
     "coverage": "make coverage",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "pub": "npm version patch && git push origin master --tags && npm publish"
   },
   "repository": {
     "type": "git",
@@ -23,24 +24,17 @@
     "chai-as-promised": "5.2.0",
     "chai-subset": "^1.2.1",
     "coveralls": "2.11.6",
-    "docme": "0.3.0",
     "dotenv": "2.0.0",
-    "gulp": "3.9.1",
-    "gulp-bump": "1.0.0",
-    "gulp-filter": "3.0.1",
-    "gulp-git": "1.7.0",
-    "gulp-jsdoc": "0.1.5",
-    "gulp-tag-version": "1.3.0",
     "istanbul": "0.4.2",
     "mocha": "2.4.5",
     "mocha-lcov-reporter": "1.2.0",
     "sinon": "1.17.3",
     "sinon-as-promised": "4.0.0",
-    "sinon-chai": "2.8.0",
-    "win-with-logs": "^5.0.13"
+    "sinon-chai": "2.8.0"
   },
   "dependencies": {
-    "bluebird": "^3.3.3",
-    "lodash": "^4.14.1"
+    "bluebird": "3.x",
+    "lodash": "4.x",
+    "robust-log": "1.x"
   }
 }

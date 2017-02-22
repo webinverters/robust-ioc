@@ -45,4 +45,4 @@ global.throwEx = function(msg) {
   throw new Error(msg)
 }
 
-global.testlog = require('win-with-logs')({app: 'robust-ioc', env: 'test', component: 'int-tests'})
+global.testlog = require('robust-log')({app: 'robust-ioc', env: 'test', component: 'int-tests'})

@@ -26,12 +26,8 @@ var copyCount = 1
 
 function RobustIOC() {}
 module.exports = function construct(config, log) {
-  log = log || muzzledlog
-  log('Robust-Ioc: Logger Detected...')
-
+  var log = log || require('robust-log')('robust-ioc')
   var m = new RobustIOC()
-
-  log = log.module('robust-ioc')
 
   if (_.isString(config)) {
     config = {
@@ -81,6 +77,8 @@ module.exports = function construct(config, log) {
 
         var inst
         var params = getParamNames(serviceFactory)
+        log('Constructing service:',{name: serviceFactory.serviceName, deps: params})
+
         if (params.length == 0) {
           inst = serviceFactory.apply(serviceFactory)
         } else {
@@ -91,7 +89,7 @@ module.exports = function construct(config, log) {
               if (!svc) log.warn('Service Dependency Missing', details)
             } catch (ex) {
               log('Error constructing service:', serviceName)
-              if (ex.code=='SERVICE_NOT_REGISTERED') {
+              if (ex.message =='SERVICE_NOT_REGISTERED') {
                 if (!(serviceFactory.optionalDeps && serviceFactory.optionalDeps[serviceName])) {
                   if (config.bail) throw log.report(new Error('MISSING_DEPENDENCY'), details, ex)
                   log.warn('Missing Dependency', details)
@@ -264,10 +262,3 @@ module.exports = function construct(config, log) {
 
   return m
 }
-
-
-function muzzledlog() {}
-muzzledlog.method = muzzledlog.goal = function() {
-  return muzzledlog
-}
-muzzledlog.info = muzzledlog.error = muzzledlog.warn = muzzledlog.log = muzzledlog.fatal = muzzledlog.module = muzzledlog
